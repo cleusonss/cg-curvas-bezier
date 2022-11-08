@@ -26,30 +26,30 @@ const Canvas = props => {
 
         highlightCell(40, 40, 'gray');
 
-        let pointsA = analytic(Point(-40, -40), Point(40, 40));
-        pointsA.forEach(plot);
+        /* Testa Algoritmo */
+        let linha0 = dda(Point(-40, 0), Point(40, 0));
+        linha0.forEach(plot);
 
-        pointsA = analytic(Point(-40, 40), Point(40, -40));
-        pointsA.forEach(plot);
+        let linha1 = dda(Point(-40, -20), Point(40, 20));
+        linha1.forEach(plot);
 
-        pointsA = analytic(Point(0, 40), Point(0, -40));
-        pointsA.forEach(plot);
-        console.log(pointsA);
+        let linha2 = dda(Point(-40, -40), Point(40, 40));
+        linha2.forEach(plot);
 
-        pointsA = analytic(Point(-20, -40), Point(20, 40));
-        pointsA.forEach(plot);
+        let linha3 = dda(Point(-20, -40), Point(20, 40));
+        linha3.forEach(plot);
 
-        pointsA = analytic(Point(-40, 0), Point(40, 0));
-        pointsA.forEach(plot);
+        let linha4 = dda(Point(0, -40), Point(0, 40));
+        linha4.forEach(plot);
 
-        pointsA = analytic(Point(-40, -20), Point(40, 20));
-        pointsA.forEach(plot);
+        let linha5 = dda(Point(20, -40), Point(-20, 40));
+        linha5.forEach(plot);
 
-        pointsA = analytic(Point(-40, 20), Point(40, -20));
-        pointsA.forEach(plot);
+        let linha6 = dda(Point(-40, 40), Point(40, -40));
+        linha6.forEach(plot);
 
-        pointsA = analytic(Point(-20, 40), Point(20, -40));
-        pointsA.forEach(plot);
+        let linha7 = dda(Point(-40, 20), Point(40, -20));
+        linha7.forEach(plot);
 
         /* Algoritmos e Funcoes */
         function analytic(point1, point2) {
@@ -92,6 +92,13 @@ const Canvas = props => {
             let dy = Math.abs(point2.y - point1.y);
 
             if (dx > dy) {
+                // Inverte Pontos
+                if(point1.x > point2.x){
+                    const endPoint = point1;
+                    point1 = point2;
+                    point2 = endPoint;
+                }
+
                 let inc = (point2.y - point1.y) / (point2.x - point1.x);
                 let y = point1.y;
 
@@ -101,6 +108,14 @@ const Canvas = props => {
                 }
             }
             else {
+
+                // Inverte Pontos
+                if(point1.y > point2.y){
+                    const endPoint = point1;
+                    point1 = point2;
+                    point2 = endPoint;
+                }
+
                 let inc = (point2.x - point1.x) / (point2.y - point1.y);
                 let x = point1.x;
 
