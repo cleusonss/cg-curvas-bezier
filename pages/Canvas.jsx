@@ -26,22 +26,46 @@ const Canvas = props => {
 
         highlightCell(40, 40, 'gray');
 
-        const pointsA = analytic(Point(-5, 9), Point(10, -4));
-        const pointsB = bresenham(Point(-5, 9), Point(10, -4));
-        const pointsD = dda(Point(-5, 9), Point(10, -4));
+        let pointsA = analytic(Point(-40, -40), Point(40, 40));
+        pointsA.forEach(plot);
 
-        console.log(pointsB);
-        
-        //pointsA.forEach(plot);
-        pointsB.forEach(plot);
-        //pointsD.forEach(plot);
+        pointsA = analytic(Point(-40, 40), Point(40, -40));
+        pointsA.forEach(plot);
 
+        pointsA = analytic(Point(0, 40), Point(0, -40));
+        pointsA.forEach(plot);
+        console.log(pointsA);
+
+        pointsA = analytic(Point(-20, -40), Point(20, 40));
+        pointsA.forEach(plot);
+
+        pointsA = analytic(Point(-40, 0), Point(40, 0));
+        pointsA.forEach(plot);
+
+        pointsA = analytic(Point(-40, -20), Point(40, 20));
+        pointsA.forEach(plot);
+
+        pointsA = analytic(Point(-40, 20), Point(40, -20));
+        pointsA.forEach(plot);
+
+        pointsA = analytic(Point(-20, 40), Point(20, -40));
+        pointsA.forEach(plot);
+
+        /* Algoritmos e Funcoes */
         function analytic(point1, point2) {
 
             let points = [];
 
             //Reta Vertical
             if (point1.x === point2.x) {
+
+                // Inverte os valores de y
+                if(point1.y > point2.y){
+                    let yAux = point1.y;
+                    point1.y = point2.y;
+                    point2.y = yAux;
+                }
+
                 for (let y = point1.y; y <= point2.y; y++) {
                     points.push(Point(point1.x, y));
                 }
@@ -89,6 +113,95 @@ const Canvas = props => {
             return points;
         }
 
+        function bresenhamLow(point1, point2) {
+
+            let points = [];
+
+            let dx = point2.x - point1.x;
+            let dy = point2.y - point1.y;
+            let yi = 1;
+
+            if (dy < 0) {
+                yi = -1;
+                dy = -dy;
+            }
+
+            let p = (2 * dy) - dx;
+            y = point1.y;
+
+            for (let x = point1.x; x <= point12.x; x++) {
+                points.push(Point(x, y));
+
+                if (p > 0) {
+                    y += yi;
+                    p += 2 * (dy - dx);
+                }else{
+                    p += 2 * dy;
+                }
+            }
+            return points;
+        }
+
+        function bresenhamHigh(point1, point2){
+
+            let points = [];
+
+            let dx = point1.x - point2.x;
+            let dy = point1.y - point2.y;
+            let xi = 1;
+
+            if( dx < 0 ){
+                xi = -1;
+                dx = -dx;
+            }
+
+            let p = (2 * dx ) - dy;
+            let x = point1.x;
+
+            for( let y = point1.y; y < point2.y; y++ ){
+                
+                points.push(Point(x, y));
+
+                if(p > 0){
+                    x += xi;
+                    p += 2 * (dx - dy);
+
+                }else{
+                    d += 2 * dx;
+                }
+            }
+
+            return points;
+        }
+
+        function bresenham2(point1, point2) {
+
+            let points = [];
+
+            if (Math.abs(point2.y - point1.y) > Math.abs(point2.x - point1.x)) {
+
+                //Normal
+                if (point2.x > point1.x) {
+                    return bresenhamLow(point1, point2);
+                }
+                // Inverte Pontos
+                else {
+                    return bresenhamLow(point2, point1);
+                }
+            } else {
+                //Normal
+                if (point2.y > point1.y) {
+                    return bresenhamHigh(point1, point2); 
+                }
+                // Inverte Pontos
+                else {
+                    return bresenhamHigh(point2, point1); 
+                }
+            }
+
+            return points;
+        }
+
         function bresenham(point1, point2) {
 
             // y2 menor que y1 
@@ -120,7 +233,7 @@ const Canvas = props => {
 
                 points.push(Point(x, y));
 
-                if (p >= 0) {
+                if (p > 0) {
                     y = y + 1;
                     p = p + 2 * (dy - dx);
                 } else {
