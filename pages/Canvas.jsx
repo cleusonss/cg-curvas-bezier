@@ -27,29 +27,29 @@ const Canvas = props => {
         highlightCell(40, 40, 'gray');
 
         /* Testa Algoritmo */
-        let linha0 = dda(Point(-40, 0), Point(40, 0));
+        let linha0 = bresenham(Point(-40, 0), Point(40, 0));
         linha0.forEach(plot);
 
-        let linha1 = dda(Point(-40, -20), Point(40, 20));
+        let linha1 = bresenham(Point(-40, -20), Point(40, 20));
         linha1.forEach(plot);
 
-        let linha2 = dda(Point(-40, -40), Point(40, 40));
+        let linha2 = bresenham(Point(-40, -40), Point(40, 40));
         linha2.forEach(plot);
 
-        let linha3 = dda(Point(-20, -40), Point(20, 40));
-        linha3.forEach(plot);
+        // let linha3 = bresenham(Point(-20, -40), Point(20, 40));
+        // linha3.forEach(plot);
 
-        let linha4 = dda(Point(0, -40), Point(0, 40));
-        linha4.forEach(plot);
+        // let linha4 = bresenham(Point(0, -40), Point(0, 40));
+        // linha4.forEach(plot);
 
-        let linha5 = dda(Point(20, -40), Point(-20, 40));
-        linha5.forEach(plot);
+        // let linha5 = bresenham(Point(20, -40), Point(-20, 40));
+        // linha5.forEach(plot);
 
-        let linha6 = dda(Point(-40, 40), Point(40, -40));
-        linha6.forEach(plot);
+        // let linha6 = bresenham(Point(-40, 40), Point(40, -40));
+        // linha6.forEach(plot);
 
-        let linha7 = dda(Point(-40, 20), Point(40, -20));
-        linha7.forEach(plot);
+        // let linha7 = bresenham(Point(-40, 20), Point(40, -20));
+        // linha7.forEach(plot);
 
         /* Algoritmos e Funcoes */
         function analytic(point1, point2) {
@@ -60,7 +60,7 @@ const Canvas = props => {
             if (point1.x === point2.x) {
 
                 // Inverte os valores de y
-                if(point1.y > point2.y){
+                if (point1.y > point2.y) {
                     let yAux = point1.y;
                     point1.y = point2.y;
                     point2.y = yAux;
@@ -93,7 +93,7 @@ const Canvas = props => {
 
             if (dx > dy) {
                 // Inverte Pontos
-                if(point1.x > point2.x){
+                if (point1.x > point2.x) {
                     const endPoint = point1;
                     point1 = point2;
                     point2 = endPoint;
@@ -110,7 +110,7 @@ const Canvas = props => {
             else {
 
                 // Inverte Pontos
-                if(point1.y > point2.y){
+                if (point1.y > point2.y) {
                     const endPoint = point1;
                     point1 = point2;
                     point2 = endPoint;
@@ -128,142 +128,71 @@ const Canvas = props => {
             return points;
         }
 
-        function bresenhamLow(point1, point2) {
-
-            let points = [];
-
-            let dx = point2.x - point1.x;
-            let dy = point2.y - point1.y;
-            let yi = 1;
-
-            if (dy < 0) {
-                yi = -1;
-                dy = -dy;
-            }
-
-            let p = (2 * dy) - dx;
-            y = point1.y;
-
-            for (let x = point1.x; x <= point12.x; x++) {
-                points.push(Point(x, y));
-
-                if (p > 0) {
-                    y += yi;
-                    p += 2 * (dy - dx);
-                }else{
-                    p += 2 * dy;
-                }
-            }
-            return points;
-        }
-
-        function bresenhamHigh(point1, point2){
-
-            let points = [];
-
-            let dx = point1.x - point2.x;
-            let dy = point1.y - point2.y;
-            let xi = 1;
-
-            if( dx < 0 ){
-                xi = -1;
-                dx = -dx;
-            }
-
-            let p = (2 * dx ) - dy;
-            let x = point1.x;
-
-            for( let y = point1.y; y < point2.y; y++ ){
-                
-                points.push(Point(x, y));
-
-                if(p > 0){
-                    x += xi;
-                    p += 2 * (dx - dy);
-
-                }else{
-                    d += 2 * dx;
-                }
-            }
-
-            return points;
-        }
-
-        function bresenham2(point1, point2) {
-
-            let points = [];
-
-            if (Math.abs(point2.y - point1.y) > Math.abs(point2.x - point1.x)) {
-
-                //Normal
-                if (point2.x > point1.x) {
-                    return bresenhamLow(point1, point2);
-                }
-                // Inverte Pontos
-                else {
-                    return bresenhamLow(point2, point1);
-                }
-            } else {
-                //Normal
-                if (point2.y > point1.y) {
-                    return bresenhamHigh(point1, point2); 
-                }
-                // Inverte Pontos
-                else {
-                    return bresenhamHigh(point2, point1); 
-                }
-            }
-
-            return points;
-        }
-
+        /* Algoritmo Bresenham */
         function bresenham(point1, point2) {
 
-            // y2 menor que y1 
-            if (point2.y < point1.y) {
-                point1.y = point1.y * -1;
-                point2.y = point2.y * -1;
+            // Armazena os porntos para retorno
+            const line = [];
+
+            // Inverte Pontos
+            if (point1.x > point2.x) {
+                return bresenham(point2, point1);
             }
 
-            // // |y2 - y1| maior que |y2 - y1|
-            // if (Math.abs(point2.y - point1.y) > Math.abs(point2.x - point1.x)) {
-            //     let xAux = point1.x;
-            //     point1.x = point1.y;
-            //     point1.y = xAux;
-
-            //     xAux = point2.x;
-            //     point2.x = point2.y;
-            //     point2.y = xAux;
-            // }
-
-            let points = [];
-            let dx = point2.x - point1.x;
-            let dy = point2.y - point1.y;
+            //Define dx e dy
+            const dx = Math.abs(point2.x - point1.x);
+            const dy = Math.abs(point2.y - point1.y);
+            
+            //Define y inicial como y1
             let y = point1.y;
-            let x = point1.x;
-            let p = 2 * dy - dx;
 
+            //Define o parametro de decidao d
+            let d = 2 * dy - dx;
 
-            for (x; x <= point2.x; x++) {
+            /* 
+                d >= 0 : incrementa y em uma unidade
+                d < 0 : mantem y
+            */
 
-                points.push(Point(x, y));
+            // Percorre incrementando x em uma unidade
+            for( let x = point1.x; x <= point2.x; x++){
+                
+                // Acende o o pixel
+                line.push( Point( x, y ) );
 
-                if (p > 0) {
+                if (d>=0){
+
+                    // Incrementa y
                     y = y + 1;
-                    p = p + 2 * (dy - dx);
-                } else {
-                    p = p - 2 * dy;
+
+                    // Atualiza parametro de decisao
+                    d = d + 2 * (dy - dx); 
+                }
+                else{
+
+                    // Mantem o y
+                    //atualiza o parametro de decisao
+                    d = d + 2 * dy;
                 }
             }
 
-            return points;
+                // Se Reta é Crescente: Incremeta x ou x,y
+
+                // Se Reta é Decrescente: Incremeta y ou x,y
+
+            console.log(line);
+            return line;
+
+
         }
+
+
 
 
         /* Nossas Funcoes */
         function drawGrid(canvas, context, step) {
 
-            context.strokeStyle = 'gray';
+            context.strokeStyle = 'lightgrey';
             context.moveTo(0.5, 0.5);
             context.lineTo(canvas.width + 0.5, 0.5);
             context.lineTo(0.5, canvas.height + 0.5);
@@ -290,7 +219,7 @@ const Canvas = props => {
         function plot(point) {
             let x = 40 + point.x;
             let y = 40 - point.y;
-            context.fillStyle = 'blue';
+            context.fillStyle = 'cornflowerblue';
             context.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 1, cellSize - 1);
         }
 
