@@ -27,38 +27,38 @@ const Canvas = props => {
         highlightCell(40, 40, 'gray');
 
         /* Testa Algoritmo */
-        // let linha0 = bresenham(Point(-40, 0), Point(40, 0));
-        // linha0.forEach(plot);
+        let linha0 = bresenham(Point(-40, 0), Point(40, 0));
+        linha0.forEach(plot);
 
-        // let linha1 = bresenham(Point(-40, -20), Point(40, 20));
-        // linha1.forEach(plot);
+        let linha1 = bresenham(Point(-40, -20), Point(40, 20));
+        linha1.forEach(plot);
 
-        // let linha2 = bresenham(Point(-40, -40), Point(40, 40));
-        // linha2.forEach(plot);
+        let linha2 = bresenham(Point(-40, -40), Point(40, 40));
+        linha2.forEach(plot);
 
-        // let linha3 = bresenham(Point(-20, -40), Point(20, 40));
-        // linha3.forEach(plot);
+        let linha3 = bresenham(Point(-20, -40), Point(20, 40));
+        linha3.forEach(plot);
 
-        // let linha4 = bresenham(Point(0, -40), Point(0, 40));
-        // linha4.forEach(plot);
+        let linha4 = bresenham(Point(0, -40), Point(0, 40));
+        linha4.forEach(plot);
 
-        // let linha5 = bresenham(Point(20, -40), Point(-20, 40));
-        // linha5.forEach(plot);
-
-        // let linha6 = bresenham(Point(-40, 40), Point(40, -40));
-        // linha6.forEach(plot);
-
-        // let linha7 = bresenham(Point(-40, 20), Point(40, -20));
-        // linha7.forEach(plot);
-
-        let linha5 = bresenham(Point(-38, 35), Point(30, 28));
+        let linha5 = bresenham(Point(20, -40), Point(-20, 40));
         linha5.forEach(plot);
 
-        let linha6 = bresenham(Point(30, 28), Point(37, -37));
+        let linha6 = bresenham(Point(-40, 40), Point(40, -40));
         linha6.forEach(plot);
 
-        let linha7 = bresenham(Point(37, -37), Point(-38, 35));
+        let linha7 = bresenham(Point(-40, 20), Point(40, -20));
         linha7.forEach(plot);
+
+        let aresta1 = bresenham(Point(-20, 20), Point(10, 10));
+        aresta1.forEach(plot);
+
+        let aresta2 = bresenham(Point(10, 10), Point(1, -20));
+        aresta2.forEach(plot);
+
+        let aresta3 = bresenham(Point(1, -20), Point(-20, 20));
+        aresta3.forEach(plot);
 
         /* Algoritmos e Funcoes */
         function analytic(point1, point2) {
@@ -232,7 +232,7 @@ const Canvas = props => {
                     for (let y = startPoint.y; y <= endPoint.y; y++) {
                         line.push(Point(x, y));
                         if(d < 0){
-                            d = d + 2 * (dy + dx);
+                            d = d + 2 * (dy - dx);
                             x = x + 1;
                         }else{
                             d = d + (-2)*dx;
