@@ -1,0 +1,6 @@
+yarn add @chakra-ui/react
+yarn add @emotion/react@^11
+yarn add @emotion/style@styled@11
+framer-motion@^6
+
+https://www.youtube.com/watch?v=baPM3SzeDWE

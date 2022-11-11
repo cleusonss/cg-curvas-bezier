@@ -1,94 +1,204 @@
 
-const Line = props => {
+import Point from './Point';
 
-    const point1 = props.point1;
-    const point2 = props.point2;
+export default function Line(start, end) {
 
-    function analytic() {
-
-        const points = [];
-
-        //Reta Vertical
-        if (point1.x === point2.x) {
-            for (let y = point1.y; y <= point2.y; y++) {
-                points.push(Point(point1.x, y));
-            }
-        }
-        // Reta Inclinada
-        else {
-            const m = (point2.y - point1.y) / (point2.x - point1.x);
-            const b = point2.y - m * point2.x;
-
-            for (let x = point1.x; x <= point2.x; x++) {
-                let y = m * x + b;
-                points.push(Point(x, Math.round(y)));
-            }
-        }
-
-        return points;
-    }
-
-    function dda() {
-
-        const points = [];
-
-        const dx = Math.abs(point2.x - point1.x);
-        const dy = Math.abs(point2.y - point1.y);
-
-        if (dx > dy) {
-            let inc = (point2.y - point1.y) / (point2.x - point1.x);
-            let y = point1.y;
-
-            for (let x = point1.x; x <= point2.x; x++) {
-                points.push(Point(x, Math.round(y)));
-                y += inc;
-            }
-        }
-        else {
-            let inc = (point2.x - point1.x) / (point2.y - point1.y);
-            let x = point1.x;
-
-            for (let y = point1.y; y <= point2.y; y++) {
-                points.push(Point(Math.round(x), y));
-                x += inc;
-            }
-        }
-
-        return points;
-    }
-
-    function bresenham(){
-
-        const points = [];
-        let dx = point2.x - point1.x;
-        let dy = point2.y - point1.y;
-        let y = point1.y;
-
-        let p = ( 2 * dy ) - dx;
-        
-        for (let x = point1.x; x < point2.x; x++){
-            
-            points.push(Point(x,y));
-
-            if( p >= 0){
-                y = y + 1;
-                p = p + 2 * (dy - dx);   
-            }else{
-                p = p - 2 * dy;
-            }
-        }
-
-        return points;
-    }
-
-
-
-    function Point(x, y) {
-        return {
-            'x': x,
-            'y': y
-        };
-    }
+    return {
+        'analytic':
+            analytic(start, end),
+        'bresenham':
+            bresenham(start, end),
+        'dda':
+            dda(start, end)
+    };
 }
 
-export default Line
+/* Funcoes */
+
+/* -- Metodo Analitico -- */
+export const analytic = (start, end) => {
+
+    //Inverte pontos
+    if (start.x > end.x) {
+        return analytic(end, start);
+    }
+
+    let line = [];
+
+    //Reta Vertical
+    if (start.x === end.x) {
+        
+        //Inverte pontos
+        if (start.y > end.y) {
+            return analytic(end, start);
+        }
+
+        for (let y = start.y; y <= end.y; y++) {
+            line.push(Point(start.x, y));
+        }
+    }
+
+    // Reta Inclinada
+    else {
+        const m = (end.y - start.y) / (end.x - start.x);
+        const b = end.y - m * end.x;
+
+        for (let x = start.x; x <= end.x; x++) {
+            let y = m * x + b;
+            line.push(Point(x, Math.round(y)));
+        }
+    }
+    return line;
+}
+
+/* -- Metodo DDA --  */
+const dda = (start, end) => {
+
+    let line = [];
+
+    let dx = Math.abs(end.x - start.x);
+    let dy = Math.abs(end.y - start.y);
+
+    if (dx > dy) {
+        // Inverte Pontos
+        if (start.x > end.x) {
+            const temp = start;
+            start = end;
+            end = temp;
+        }
+
+        let inc = (end.y - start.y) / (end.x - start.x);
+        let y = start.y;
+
+        for (let x = start.x; x <= end.x; x++) {
+            line.push(Point(x, Math.round(y)));
+            y += inc;
+        }
+    }
+    else {
+
+        // Inverte Pontos
+        if (start.y > end.y) {
+            const temp = start;
+            start = end;
+            end = temp;
+        }
+
+        let inc = (end.x - start.x) / (end.y - start.y);
+        let x = start.x;
+
+        for (let y = start.y; y <= end.y; y++) {
+            line.push(Point(Math.round(x), y));
+            x += inc;
+        }
+    }
+
+    return line;
+}
+
+/* -- Método de Bresenhan -- */
+// http://letslearnbits.blogspot.com/2014/10/icgt1-algoritmo-de-bresenham.html
+function bresenham(start, end) {
+
+    // Armazena os porntos para retorno
+    const line = [];
+
+    //Define dx e dy
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+
+    // Inverte Pontos
+    if (dx < 0) {
+        return bresenham(end, start);
+    }
+
+    // Define a inclinacao da reta
+    let m = 0;
+    if (dy < 0) {
+        m = -1;
+    } else {
+        m = 1;
+    }
+
+    /*
+       dx >= m * dy : inclinca m <= 1
+       dx < m * dy => |m| > 1
+     */
+    if (dx >= m * dy) {
+
+        /* 
+            dy < 0 => y2 < y1
+            dy > 0 => y2 > y1
+        */
+        if (dy < 0) {
+
+            //Define y inicial como y1
+            let y = start.y;
+
+            // Define Parametro de decisao
+            let d = 2 * dy + dx;
+
+            // Percorre incrementando x em uma unidade
+            for (let x = start.x; x <= end.x; x++) {
+                line.push(Point(x, y));
+
+                if (d < 0) {
+                    d = d + 2 * (dy + dx);
+                    y = y - 1;
+                } else {
+                    d = d + 2 * dy;
+                }
+            }
+        }
+        else {
+            let y = start.y;
+            let d = 2 * dy - dx;
+
+            for (let x = start.x; x <= end.x; x++) {
+                line.push(Point(x, y));
+
+                if (d < 0) {
+                    d = d + 2 * dy;
+                } else {
+                    d = d + 2 * (dy - dx);
+                    y = y + 1;
+                }
+
+            }
+        }
+    }
+    else {
+
+        if (dy < 0) { // y2 < y1
+            let x = start.x;
+            let d = dy + 2 * dx;
+
+
+            for (let y = start.y; y >= end.y; y--) {
+                line.push(Point(x, y));
+                if (d < 0) {
+                    d = d + 2 * dx; //varia apenas no eixo y
+                } else {
+                    d = d + 2 * (dy + dx);
+                    x = x + 1;
+                }
+            }
+        } else {
+            let x = start.x;
+            let d = dy - 2 * dx;
+
+
+            for (let y = start.y; y <= end.y; y++) {
+                line.push(Point(x, y));
+                if (d < 0) {
+                    d = d + 2 * (dy - dx);
+                    x = x + 1;
+                } else {
+                    d = d + (-2) * dx;
+                }
+            }
+        }
+    }
+
+    return line;
+}

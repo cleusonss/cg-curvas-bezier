@@ -911,6 +911,14 @@
   resolved "https://registry.yarnpkg.com/@emotion/sheet/-/sheet-1.2.1.tgz#0767e0305230e894897cadb6c8df2c51e61a6c2c"
   integrity sha512-zxRBwl93sHMsOj4zs+OslQKg/uhF38MB+OMKoCrVuS0nyTkqnau+BM3WGEoOptg9Oz45T/aIGs1qbVAsEFo3nA==
 
+"@emotion/style@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@emotion/style/-/style-0.8.0.tgz#0130c5d8f2999be509e4fa8a8a9dc6a25e6443e9"
+  integrity sha512-Hw2hoarCADedyFIteTUM5PIxPAGl8PX+o+oNUlgnpttCD99hwCklY2PGGt9L30FbAT+PFSCiZooGmQTY4ueTyA==
+  dependencies:
+    "@emotion/types" "^0.6.2"
+    "@emotion/utils" "^0.6.1"
+
 "@emotion/styled@^11.10.5":
   version "11.10.5"
   resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.10.5.tgz#1fe7bf941b0909802cb826457e362444e7e96a79"
@@ -923,6 +931,11 @@
     "@emotion/use-insertion-effect-with-fallbacks" "^1.0.0"
     "@emotion/utils" "^1.2.0"
 
+"@emotion/types@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@emotion/types/-/types-0.6.2.tgz#ca3bd5053b9c0004982fed816f4c7ad9cdb4c423"
+  integrity sha512-uVXdC6lW+xbuLSR5zFydd3HChdvuNBad5uT1l1HX2vZLHqsMNq0HizY5W34UzASoCF2aNAskIqAmWkZ5bpF+rQ==
+
 "@emotion/unitless@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.8.0.tgz#a4a36e9cbdc6903737cd20d38033241e1b8833db"
@@ -932,6 +945,11 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@emotion/use-insertion-effect-with-fallbacks/-/use-insertion-effect-with-fallbacks-1.0.0.tgz#ffadaec35dbb7885bd54de3fa267ab2f860294df"
   integrity sha512-1eEgUGmkaljiBnRMTdksDV1W4kUnmwgp7X9G8B++9GYwl1lUdqSndSriIrTJ0N7LQaoauY9JJ2yhiOYK5+NI4A==
+
+"@emotion/utils@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.6.1.tgz#f657657b9db639e9f91fcb81284601f2e8e09df2"
+  integrity sha512-HZlSY1AxnK/Vi/zZx7Lacliqo74G/5zn0HqgCtC0ucBkO3BW2S1XCErlZxVMVoYi6r3qyn8wE0nQltbu/bx1+A==
 
 "@emotion/utils@^1.2.0":
   version "1.2.0"
