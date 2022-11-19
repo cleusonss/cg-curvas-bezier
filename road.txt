@@ -1,6 +1,7 @@
 yarn add @chakra-ui/react
-yarn add @emotion/react@^11
-yarn add @emotion/style@styled@11
-framer-motion@^6
+yarn add @emotion/react
+yarn add @emotion/style@styled
+yarn add framer-motion
+yarn add axios
 
 https://www.youtube.com/watch?v=baPM3SzeDWE

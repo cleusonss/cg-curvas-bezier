@@ -4,7 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Point from './Point';
 import Line from './Line';
+import { prependOnceListener } from "process";
 
+const { log } = console;
 
 const Canvas = props => {
 
@@ -12,9 +14,28 @@ const Canvas = props => {
     const cellSize = 10;
     const defaultFrameSize = 812;
     const defaultColor = 'gray';
+    
+    const line = () => {
+        const array = Line(
+            Point(parseInt(props.startX), parseInt(props.startY)),
+            Point(parseInt(props.endX), parseInt(props.endY))
+        )
+        switch (props.algorithm) {
+            case 'Analitico':
+                return array.analytic;
+            case 'Bresenham':
+                return array.bresenham;
+            case 'DDA':
+                return array.dda;
+            default:
+                return [];
+        }
+    };
 
     useEffect(() => {
-
+        
+        line();
+        
         const canvas = canvasRef.current
         canvas.width = defaultFrameSize;
         canvas.height = defaultFrameSize;
@@ -56,7 +77,7 @@ const Canvas = props => {
         }
 
         drawGrid(canvas, context, cellSize);
-        
+
         /* Marca Eixo X e Eixo Y*/
         for (let i = 0; i < (canvas.width / cellSize); i++) {
             highlightCell(i, 40, 'whitesmoke');
@@ -66,29 +87,32 @@ const Canvas = props => {
         /* Marca o centro do plano */
         highlightCell(40, 40, defaultColor);
 
+        log(  line() );
+        line().forEach(plot)
+
         /* Testa Algoritmo */
-        let x = -40;
-        for (let y = -40; y <= 40; y += 20) {
-            Line(
-                Point(x, y), 
-                Point(-x, -y)
-            )
-            .analytic
-            .forEach(plot);
-        }
-        let y = -40;
-        for (let x = -20; x <= 20; x += 20) {
-            Line(
-                Point(x, y), 
-                Point(-x, -y)
-            )
-            .analytic
-            .forEach(plot);
-        }
+        // let x = -40;
+        // for (let y = -40; y <= 40; y += 20) {
+        //     Line(
+        //         Point(x, y), 
+        //         Point(-x, -y)
+        //     )
+        //     .dda
+        //     .forEach(plot);
+        // }
+        // let y = -40;
+        // for (let x = -20; x <= 20; x += 20) {
+        //     Line(
+        //         Point(x, y), 
+        //         Point(-x, -y)
+        //     )
+        //     .dda
+        //     .forEach(plot);
+        // }
 
-        
 
-    }, [])
+
+    }, [props])
 
     return <canvas ref={canvasRef} {...props} />
 }

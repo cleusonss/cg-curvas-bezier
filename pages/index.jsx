@@ -1,34 +1,53 @@
+// http://bert.stuy.edu/pbrooks/graphics/demos/BresenhamDemo.htm
+
 import { useState } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Square, Text, Center, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, InputLeftElement, Stack, Button, Input, InputGroup, InputLeftAddon, Box, Flex, StackDivider, VStack, HStack, FormControl, FormLabel, RadioGroup, Radio, FormHelperText } from '@chakra-ui/react';
+import { Text, Center, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Stack, Button, InputGroup, InputLeftAddon, Box, Flex, VStack, RadioGroup, Radio } from '@chakra-ui/react';
+
+import axios from 'axios';
 
 import Canvas from './Canvas';
-import { format } from 'path';
 
 const { log } = console;
 
+
+
 export default function Home() {
 
-  const [startX, setStartX] = useState();
-  const [startY, setStartY] = useState();
-  const [endX, setEndX] = useState();
-  const [endY, setEndY] = useState();
-  const [method, setMethod] = useState();
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const [endX, setEndX] = useState(0);
+  const [endY, setEndY] = useState(0);
+  const [algorithm, setAlgorithm] = useState('Analitico');
 
-  const handleSubmit = (event) => {
+  const [line, setLine] = useState();
+
+  const handleSubmit = async (event) => {
+
     event.preventDefault();
 
     const payload = {
+      algorithm,
       startX,
       startY,
       endX,
-      endY,
-      method
+      endY
     }
 
-    log("Payload: ", payload);
+    try {
+
+      const { data } = await axios({
+        url: "/api/line",
+        method: "POST",
+        data: payload
+      });
+
+      setLine( data );
+    } catch (error) {
+      return error;
+    }
 
   }
 
@@ -39,7 +58,7 @@ export default function Home() {
         <Text>Computação Gráfica - Algoritmos Linha</Text>
       </Center>
 
-      <Flex>
+      <Flex width={'full'} h="100vh">
 
         {/* Menu */}
         <Center flex='1' h="100vh">
@@ -59,7 +78,7 @@ export default function Home() {
                   <Text color={'white'} fontSize={'md'} fontWeight='semibold'>Método</Text>
                 </Center>
                 <Box padding={2}>
-                  <RadioGroup defaultValue='Analitico' value={method} onChange={setMethod} direction="1">
+                  <RadioGroup defaultValue='Analitico' value={algorithm} onChange={setAlgorithm} direction="1">
                     <Stack>
                       <Radio value='Analitico'>Analitico</Radio>
                       <Radio value='Bresenham'>Bresenham</Radio>
@@ -78,6 +97,7 @@ export default function Home() {
                 {/* Start X */}
                 <Box padding={2}>
                   <InputGroup>
+                    <InputLeftAddon children='x' />
                     <NumberInput
                       w={'full'}
                       variant='outline'
@@ -98,6 +118,7 @@ export default function Home() {
                 {/* Start Y */}
                 <Box padding={2}>
                   <InputGroup>
+                    <InputLeftAddon children='y' />
                     <NumberInput
                       w={'full'}
                       variant='outline'
@@ -127,6 +148,7 @@ export default function Home() {
                 {/* End X */}
                 <Box padding={2}>
                   <InputGroup>
+                    <InputLeftAddon children='x' />
                     <NumberInput
                       w={'full'}
                       variant='outline'
@@ -147,6 +169,7 @@ export default function Home() {
                 {/* End Y */}
                 <Box padding={2}>
                   <InputGroup>
+                    <InputLeftAddon children='y' />
                     <NumberInput
                       w={'full'}
                       variant='outline'
@@ -176,7 +199,22 @@ export default function Home() {
 
         {/* Canvas */}
         <Center flex='1'>
-          <Canvas />
+          <VStack
+            boxShadow={'2xl'}
+            borderWidth='1px'
+            rounded={'md'}
+            overflow={'hidden'}
+            padding={6}
+          >
+            <Canvas
+              line = { line }
+              algorithm={ algorithm }
+              startX={startX}
+              startY={startY}
+              endX={endX}
+              endY={endY}
+            />
+          </VStack>
         </Center>
       </Flex>
 
