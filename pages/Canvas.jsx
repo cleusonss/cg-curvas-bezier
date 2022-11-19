@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Point from './Point';
 import Line from './Line';
 import Circle from "./Circle";
+import { delay } from "framer-motion";
+import { setMaxIdleHTTPParsers } from "http";
 
 const { log } = console;
 
@@ -30,14 +32,34 @@ const Canvas = props => {
             const array = Line(
                 Point(parseInt(props.startX), parseInt(props.startY)),
                 Point(parseInt(props.endX), parseInt(props.endY))
-            )
-            switch (props.algorithm) {
+            );
+
+            switch (props.lineAlgorithm) {
                 case 'Analitico':
                     return array.analytic;
                 case 'Bresenham':
                     return array.bresenham;
                 case 'DDA':
                     return array.dda;
+                default:
+                    return [];
+            }
+        };
+
+        /* Escolhe Circulo de acordo com o Algoritmo */
+        const circle = () => {
+            const array = Circle(
+                Point(parseInt(props.centerX), parseInt(props.centerY)),
+                parseInt(props.radius)
+            );
+
+            switch (props.circleAlgorithm) {
+                case 'Bresenham':
+                    return array.bresenham;
+                case 'Incremental':
+                    return array.increment;
+                case 'Parametrico':
+                    return array.parametric;
                 default:
                     return [];
             }
@@ -126,11 +148,10 @@ const Canvas = props => {
         //             break;
         //     }
         // }
+        
+        /* Plota Circulo */
+        circle().forEach(plot);
 
-        Circle(
-            Point(parseInt(props.startX), parseInt(props.startY)),
-            20
-        ).bresenham.forEach(plot);
 
 
     }, [props])

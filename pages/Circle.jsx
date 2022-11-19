@@ -22,6 +22,10 @@ export const parametric = (center, r) => {
 
     let circle = [];
 
+    if( r === 0){
+        return circle;
+    }
+
     let x = center.x + r;
     let y = center.y;
 
@@ -37,8 +41,13 @@ export const parametric = (center, r) => {
 /* -- Metodo Incremental -- */
 export const increment = (center, r) => {
 
+
     /* Armazena pontos da Circuferencia */
     let circle = [];
+
+    if( r === 0){
+        return circle;
+    }
 
     /* Define o Angulo do Incremento */
     let theta = 0;
@@ -56,33 +65,11 @@ export const increment = (center, r) => {
 
     // Calcula os pontos do Primeiro Octante
     // Por Simetria replica nos demais
-    while (x > y) {
+    while (x >= y) {
 
-        // Primeiro Octante
-        circle.push(Point(Math.round(x + center.x), Math.round(y + center.y)));
+        /* Armazena pontos a serem acesos */
+        circle = circle.concat(circle, joinOctantes( Math.round(x), Math.round(y), center.x, center.y ));
 
-        // Segundo Octante
-        circle.push(Point(Math.round(y + center.x), Math.round(x + center.y)));
-
-        // Terceiro Octante
-        circle.push(Point(Math.round(-y + center.x), Math.round(x + center.y)));
-
-        // Quarto Octante
-        circle.push(Point(Math.round(-x + center.x), Math.round(y + center.y)));
-
-        // Quinto Octante
-        circle.push(Point(Math.round(-x + center.x), Math.round(-y + center.y)));
-
-        // Sexto Octante
-        circle.push(Point(Math.round(-y + center.x), Math.round(-x + center.y)));
-        
-        // Setimo Octante
-        circle.push(Point(Math.round(y + center.x), Math.round(-x + center.y)));
-        
-        // Oitavo Octante
-        circle.push(Point(Math.round(x + center.x), Math.round(-y + center.y)));
-
-        
         /* valor temporario de x */
         let xn = x;
 
@@ -102,6 +89,10 @@ export const bresenham = (center, r) => {
     /* Armazena pontos da Circuferencia */
     let circle = [];
 
+    if( r === 0){
+        return circle;
+    }
+
     /* X e Y Inicial */
     let x = 0;
     let y = r;
@@ -111,43 +102,51 @@ export const bresenham = (center, r) => {
     // Por Simetria replica nos demais
     while (x <= y) {
 
-        // Primeiro Octante
-        circle.push(Point(x + center.x, y + center.y));
+        circle = circle.concat(circle, joinOctantes( Math.round(x), Math.round(y), center.x, center.y ));
 
-        // Segundo Octante
-        circle.push(Point(Math.round(y + center.x), Math.round(x + center.y)));
-
-        // Terceiro Octante
-        circle.push(Point(Math.round(-y + center.x), Math.round(x + center.y)));
-
-        // Quarto Octante
-        circle.push(Point(Math.round(-x + center.x), Math.round(y + center.y)));
-
-        // Quinto Octante
-        circle.push(Point(Math.round(-x + center.x), Math.round(-y + center.y)));
-
-        // Sexto Octante
-        circle.push(Point(Math.round(-y + center.x), Math.round(-x + center.y)));
-        
-        // Setimo Octante
-        circle.push(Point(Math.round(y + center.x), Math.round(-x + center.y)));
-        
-        // Oitavo Octante
-        circle.push(Point(Math.round(x + center.x), Math.round(-y + center.y)));
-
-        if(p>=0){
+        if (p >= 0) {
             y = y - 1;
-            p = p + 2*x - 2*y + 5;
+            p = p + 2 * x - 2 * y + 5;
 
-        }else{
-            p = p + 2*x + 3;
+        } else {
+            p = p + 2 * x + 3;
         }
 
-        
         x++;
-
-        log(circle);
     }
 
     return circle;
+}
+
+/* Funcao auxiliar para Juntar outros octantes por simetria */
+export const joinOctantes = (x, y, xc, yc) => {
+
+    let circle = [];
+
+    // Primeiro Octante
+    circle.push(Point(x + xc, y + yc));
+
+    // Segundo Octante
+    circle.push(Point(y + xc, x + yc));
+
+    // Terceiro Octante
+    circle.push(Point(-y + xc, x + yc));
+
+    // Quarto Octante
+    circle.push(Point(-x + xc, y + yc));
+
+    // Quinto Octante
+    circle.push(Point(-x + xc, -y + yc));
+
+    // Sexto Octante
+    circle.push(Point(-y + xc, -x + yc));
+
+    // Setimo Octante
+    circle.push(Point(y + xc, -x + yc));
+
+    // Oitavo Octante
+    circle.push(Point(x + xc, -y + yc));
+
+    return circle;
+
 }

@@ -20,36 +20,41 @@ export default function Home() {
   const [startY, setStartY] = useState(0);
   const [endX, setEndX] = useState(0);
   const [endY, setEndY] = useState(0);
-  const [algorithm, setAlgorithm] = useState('Analitico');
+  const [lineAlgorithm, setLineAlgorithm] = useState('Analitico');
+  
+  const [circleAlgorithm, setCircleAlgorithm] = useState('Bresenham');
+  const [centerX, setCenterX] = useState(0);
+  const [centerY, setCenterY] = useState(0);
+  const [radius, setRadius] = useState(0);
 
-  const [line, setLine] = useState();
+  // const [line, setLine] = useState();
 
-  const handleSubmit = async (event) => {
+  // const handleSubmit = async (event) => {
 
-    event.preventDefault();
+  //   event.preventDefault();
 
-    const payload = {
-      algorithm,
-      startX,
-      startY,
-      endX,
-      endY
-    }
+  //   const payload = {
+  //     lineaAlgorithm,
+  //     startX,
+  //     startY,
+  //     endX,
+  //     endY
+  //   }
 
-    try {
+  //   try {
 
-      const { data } = await axios({
-        url: "/api/line",
-        method: "POST",
-        data: payload
-      });
+  //     const { data } = await axios({
+  //       url: "/api/line",
+  //       method: "POST",
+  //       data: payload
+  //     });
 
-      setLine( data );
-    } catch (error) {
-      return error;
-    }
+  //     setLine( data );
+  //   } catch (error) {
+  //     return error;
+  //   }
 
-  }
+  // }
 
   return (
     <VStack>
@@ -78,7 +83,7 @@ export default function Home() {
                   <Text color={'white'} fontSize={'md'} fontWeight='semibold'>Método</Text>
                 </Center>
                 <Box padding={2}>
-                  <RadioGroup defaultValue='Analitico' value={algorithm} onChange={setAlgorithm} direction="1">
+                  <RadioGroup defaultValue='Analitico' value={lineAlgorithm} onChange={setLineAlgorithm} direction="1">
                     <Stack>
                       <Radio value='Analitico'>Analitico</Radio>
                       <Radio value='Bresenham'>Bresenham</Radio>
@@ -188,6 +193,100 @@ export default function Home() {
                 </Box>
               </Box>
 
+              {/* Circulo */}
+              {/* Método */}
+              <Box w={'full'} borderColor="gray.400" borderWidth={1} borderRadius={'2'}>
+                <Center bgColor={'gray.400'}>
+                  <Text color={'white'} fontSize={'md'} fontWeight='semibold'>Método</Text>
+                </Center>
+                <Box padding={2}>
+                  <RadioGroup defaultValue='Bresenham' value={circleAlgorithm} onChange={setCircleAlgorithm} direction="1">
+                    <Stack>
+                      <Radio value='Bresenham'>Bresenham</Radio>
+                      <Radio value='Incremental'>Incremental</Radio>
+                      <Radio value='Parametrico'>Paramétrico</Radio>
+                    </Stack>
+                  </RadioGroup>
+                </Box>
+              </Box>
+
+              {/* Center */}
+              <Box w={'full'} borderColor="gray.400" borderWidth={1} borderRadius={'2'}>
+                <Center bgColor={'gray.400'}>
+                  <Text color={'white'} fontSize={'md'} fontWeight='semibold'>Centro</Text>
+                </Center>
+
+                {/* Center X */}
+                <Box padding={2}>
+                  <InputGroup>
+                    <InputLeftAddon children='x' />
+                    <NumberInput
+                      w={'full'}
+                      variant='outline'
+                      defaultValue={0}
+                      min={-40}
+                      max={40}
+                      onChange={setCenterX}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </InputGroup>
+                </Box>
+
+                {/* Center Y */}
+                <Box padding={2}>
+                  <InputGroup>
+                    <InputLeftAddon children='y' />
+                    <NumberInput
+                      w={'full'}
+                      variant='outline'
+                      defaultValue={0}
+                      min={-40}
+                      max={40}
+                      onChange={setCenterY}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </InputGroup>
+                </Box>
+              </Box>
+
+              {/* Center */}
+              <Box w={'full'} borderColor="gray.400" borderWidth={1} borderRadius={'2'}>
+                <Center bgColor={'gray.400'}>
+                  <Text color={'white'} fontSize={'md'} fontWeight='semibold'>Raio</Text>
+                </Center>
+
+                {/* Raio */}
+                <Box padding={2}>
+                  <InputGroup>
+                    <InputLeftAddon children='r' />
+                    <NumberInput
+                      w={'full'}
+                      variant='outline'
+                      defaultValue={0}
+                      min={0}
+                      max={20}
+                      onChange={ setRadius }
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </InputGroup>
+                </Box>
+              </Box>
+
               {/* Botton Submit */}
               {/* 
               <Box w={'full'} padding={2}>
@@ -209,12 +308,18 @@ export default function Home() {
             padding={6}
           >
             <Canvas
-              line = { line }
-              algorithm={ algorithm }
+
+              lineAlgorithm={ lineAlgorithm }
               startX={startX}
               startY={startY}
               endX={endX}
               endY={endY}
+
+              circleAlgorithm = { circleAlgorithm }
+              centerX = { centerX }
+              centerY = { centerY }
+              radius = { radius }
+              
             />
           </VStack>
         </Center>
