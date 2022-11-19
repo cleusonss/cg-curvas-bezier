@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Point from './Point';
 import Line from './Line';
-import { prependOnceListener } from "process";
+import Circle from "./Circle";
 
 const { log } = console;
 
@@ -14,35 +14,51 @@ const Canvas = props => {
     const cellSize = 10;
     const defaultFrameSize = 812;
     const defaultColor = 'gray';
-    
-    const line = () => {
-        const array = Line(
-            Point(parseInt(props.startX), parseInt(props.startY)),
-            Point(parseInt(props.endX), parseInt(props.endY))
-        )
-        switch (props.algorithm) {
-            case 'Analitico':
-                return array.analytic;
-            case 'Bresenham':
-                return array.bresenham;
-            case 'DDA':
-                return array.dda;
-            default:
-                return [];
-        }
-    };
 
     useEffect(() => {
-        
-        line();
-        
+                
         const canvas = canvasRef.current
         canvas.width = defaultFrameSize;
         canvas.height = defaultFrameSize;
 
         const context = canvas.getContext("2d");
 
-        /* Nossas Funcoes */
+        /* ---- Funções ---- */
+
+        /* Escolhe Linha de acordo com o Algoritmo */
+        const line = () => {
+            const array = Line(
+                Point(parseInt(props.startX), parseInt(props.startY)),
+                Point(parseInt(props.endX), parseInt(props.endY))
+            )
+            switch (props.algorithm) {
+                case 'Analitico':
+                    return array.analytic;
+                case 'Bresenham':
+                    return array.bresenham;
+                case 'DDA':
+                    return array.dda;
+                default:
+                    return [];
+            }
+        };
+
+        /* Plota ponto no Grid */
+        function plot(point) {
+            let x = 40 + point.x;
+            let y = 40 - point.y;
+            context.fillStyle = 'cornflowerblue';
+            context.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 1, cellSize - 1);
+        }
+
+
+        /* Plota Pixel com uma cor definida */
+        function highlightCell(x, y, color) {
+            context.fillStyle = color;
+            context.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 1, cellSize - 1);
+        }
+
+        /* Desenha Grid */
         function drawGrid(canvas, context, step) {
 
             context.strokeStyle = 'lightgrey';
@@ -64,18 +80,9 @@ const Canvas = props => {
             context.stroke();
         }
 
-        function highlightCell(x, y, color) {
-            context.fillStyle = color;
-            context.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 1, cellSize - 1);
-        }
+        /* Aplica Funcoes */
 
-        function plot(point) {
-            let x = 40 + point.x;
-            let y = 40 - point.y;
-            context.fillStyle = 'cornflowerblue';
-            context.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 1, cellSize - 1);
-        }
-
+        /* Desenha o Grid */
         drawGrid(canvas, context, cellSize);
 
         /* Marca Eixo X e Eixo Y*/
@@ -87,29 +94,43 @@ const Canvas = props => {
         /* Marca o centro do plano */
         highlightCell(40, 40, defaultColor);
 
-        log(  line() );
-        line().forEach(plot)
+        /* Plota Linha */
+        line().forEach(plot);
 
-        /* Testa Algoritmo */
+        // /* Testa Algoritmo */
         // let x = -40;
         // for (let y = -40; y <= 40; y += 20) {
-        //     Line(
-        //         Point(x, y), 
-        //         Point(-x, -y)
-        //     )
-        //     .dda
-        //     .forEach(plot);
+        //     switch (props.algorithm) {
+        //         case 'Analitico':
+        //             Line(Point(x, y), Point(-x, -y)).analytic.forEach(plot);
+        //             break;
+        //         case 'Bresenham':
+        //             Line(Point(x, y), Point(-x, -y)).bresenham.forEach(plot);
+        //             break;
+        //         case 'DDA':
+        //             Line(Point(x, y), Point(-x, -y)).dda.forEach(plot);
+        //             break;
+        //     }
         // }
         // let y = -40;
         // for (let x = -20; x <= 20; x += 20) {
-        //     Line(
-        //         Point(x, y), 
-        //         Point(-x, -y)
-        //     )
-        //     .dda
-        //     .forEach(plot);
+        //     switch (props.algorithm) {
+        //         case 'Analitico':
+        //             Line(Point(x, y), Point(-x, -y)).analytic.forEach(plot);
+        //             break;
+        //         case 'Bresenham':
+        //             Line(Point(x, y), Point(-x, -y)).bresenham.forEach(plot);
+        //             break;
+        //         case 'DDA':
+        //             Line(Point(x, y), Point(-x, -y)).dda.forEach(plot);
+        //             break;
+        //     }
         // }
 
+        Circle(
+            Point(parseInt(props.startX), parseInt(props.startY)),
+            20
+        ).bresenham.forEach(plot);
 
 
     }, [props])

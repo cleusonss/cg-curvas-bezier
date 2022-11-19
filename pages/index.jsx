@@ -189,9 +189,11 @@ export default function Home() {
               </Box>
 
               {/* Botton Submit */}
+              {/* 
               <Box w={'full'} padding={2}>
                 <Button w={'full'} colorScheme='blue' variant='solid' onClick={handleSubmit}> Plotar </Button>
-              </Box>
+              </Box> 
+              */}
             </VStack>
           </Center>
 
