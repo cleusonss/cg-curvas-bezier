@@ -22,7 +22,7 @@ export const parametric = (center, r) => {
 
     let circle = [];
 
-    if( r === 0){
+    if (r === 0) {
         return circle;
     }
 
@@ -45,15 +45,12 @@ export const increment = (center, r) => {
     /* Armazena pontos da Circuferencia */
     let circle = [];
 
-    if( r === 0){
+    if (r === 0) {
         return circle;
     }
 
     /* Define o Angulo do Incremento */
-    let theta = 0;
-    if (r !== 0) {
-        theta = (1 / r);
-    }
+    let theta = (1 / r);
 
     /* Sen e Cos  */
     let cos = Math.cos(theta);
@@ -63,12 +60,14 @@ export const increment = (center, r) => {
     let x = r;
     let y = 0;
 
+    /* Adiciona Pontos Iniciais */
+    circle = circle.concat(circle, joinOctantes(Math.round(x), Math.round(y), center.x, center.y));
+
     // Calcula os pontos do Primeiro Octante
     // Por Simetria replica nos demais
-    while (x >= y) {
 
-        /* Armazena pontos a serem acesos */
-        circle = circle.concat(circle, joinOctantes( Math.round(x), Math.round(y), center.x, center.y ));
+    while (x > y) {
+
 
         /* valor temporario de x */
         let xn = x;
@@ -76,6 +75,10 @@ export const increment = (center, r) => {
         /* Calcula nova coordenada x,y */
         x = (xn * cos) - (y * sin);
         y = (y * cos) + (xn * sin);
+
+        /* Armazena pontos da circunferencia */
+        circle = circle.concat(circle, joinOctantes(Math.round(x), Math.round(y), center.x, center.y));
+
     }
 
     return circle;
@@ -89,7 +92,7 @@ export const bresenham = (center, r) => {
     /* Armazena pontos da Circuferencia */
     let circle = [];
 
-    if( r === 0){
+    if (r === 0) {
         return circle;
     }
 
@@ -102,7 +105,7 @@ export const bresenham = (center, r) => {
     // Por Simetria replica nos demais
     while (x <= y) {
 
-        circle = circle.concat(circle, joinOctantes( Math.round(x), Math.round(y), center.x, center.y ));
+        circle = circle.concat(circle, joinOctantes(Math.round(x), Math.round(y), center.x, center.y));
 
         if (p >= 0) {
             y = y - 1;
