@@ -202,3 +202,35 @@ function bresenham(start, end) {
 
     return line;
 }
+
+
+
+        // /* Testa Algoritmo */
+        // let x = -40;
+        // for (let y = -40; y <= 40; y += 20) {
+        //     switch (props.algorithm) {
+        //         case 'Analitico':
+        //             Line(Point(x, y), Point(-x, -y)).analytic.forEach(plot);
+        //             break;
+        //         case 'Bresenham':
+        //             Line(Point(x, y), Point(-x, -y)).bresenham.forEach(plot);
+        //             break;
+        //         case 'DDA':
+        //             Line(Point(x, y), Point(-x, -y)).dda.forEach(plot);
+        //             break;
+        //     }
+        // }
+        // let y = -40;
+        // for (let x = -20; x <= 20; x += 20) {
+        //     switch (props.algorithm) {
+        //         case 'Analitico':
+        //             Line(Point(x, y), Point(-x, -y)).analytic.forEach(plot);
+        //             break;
+        //         case 'Bresenham':
+        //             Line(Point(x, y), Point(-x, -y)).bresenham.forEach(plot);
+        //             break;
+        //         case 'DDA':
+        //             Line(Point(x, y), Point(-x, -y)).dda.forEach(plot);
+        //             break;
+        //     }
+        // }
