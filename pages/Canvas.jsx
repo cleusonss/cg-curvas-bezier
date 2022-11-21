@@ -154,10 +154,10 @@ const Canvas = props => {
         // poligonA = poligonA.concat(Line(Point(30, 0), Point(25, -10)).bresenham);
         // poligonA = poligonA.concat(Line(Point(-20, -20), Point(25, -10)).bresenham);
         // poligonA = poligonA.concat(Line(Point(-20, -20), Point(-5, -5)).bresenham);
-        // poligonA.forEach(plot);
-        // floodFill(poligonA, Point(0, 0), []).forEach( element => plotWithColor(element, 'plum'));
+        //poligonA.forEach(plot);
+        //floodFill(poligonA, Point(0, 0), []).forEach( element => plotWithColor(element, 'plum'));
 
-        // /* Preenchimento por Analise de Contorno Geometrico */
+        /* Preenchimento por Analise de Contorno Geometrico */
         // poligonA.push(Point(-5, -5));
         // poligonA.push(Point(-30, 10));
         // poligonA.push(Point(0, 20));
@@ -166,16 +166,16 @@ const Canvas = props => {
         // poligonA.push(Point(-20, -20));
         // geometric( poligonA ).forEach(element => plotWithColor(element, 'purple'));
 
-        // let poligon = [];
-        // poligon = poligon.concat(Line(Point(-25, -5), Point(-30, 10)).bresenham);
-        // poligon = poligon.concat(Line(Point(-30, 10), Point(0, 20)).bresenham);
-        // poligon = poligon.concat(Line(Point(0, 20), Point(25, 10)).bresenham);
-        // poligon = poligon.concat(Line(Point(25, 10), Point(20, -5)).bresenham);
-        // poligon = poligon.concat(Line(Point(20, -5), Point(0, -10)).bresenham);
-        // poligon = poligon.concat(Line(Point(-5, 5), Point(0, -10)).bresenham);
-        // poligon = poligon.concat(Line(Point(-5, 5), Point(10, 8)).bresenham);
-        // poligon = poligon.concat(Line(Point(5, 0), Point(10, 8)).bresenham);
-        // poligon = poligon.concat(Line(Point(5, 0), Point(-25, -5)).bresenham);
+        let poligon = [];
+        poligon = poligon.concat(Line(Point(-25, -5), Point(-30, 10)).bresenham);
+        poligon = poligon.concat(Line(Point(-30, 10), Point(0, 20)).bresenham);
+        poligon = poligon.concat(Line(Point(0, 20), Point(25, 10)).bresenham);
+        poligon = poligon.concat(Line(Point(25, 10), Point(20, -5)).bresenham);
+        poligon = poligon.concat(Line(Point(20, -5), Point(0, -10)).bresenham);
+        poligon = poligon.concat(Line(Point(-5, 5), Point(0, -10)).bresenham);
+        poligon = poligon.concat(Line(Point(-5, 5), Point(10, 8)).bresenham);
+        poligon = poligon.concat(Line(Point(5, 0), Point(10, 8)).bresenham);
+        poligon = poligon.concat(Line(Point(5, 0), Point(-25, -5)).bresenham);
         // poligon.forEach(plot);
         // floodFill(poligon, Point(-26, 8), []).forEach( element => plotWithColor(element, 'red'));
         // floodFill(poligon, Point(0, 0), []).forEach( element => plotWithColor(element, 'slateblue'));
@@ -193,7 +193,7 @@ const Canvas = props => {
         poligonB.push(Point(5, 0));
         poligonB.push(Point(-25, -5));
 
-        geometric( poligonB ).forEach(element => plotWithColor(element, 'purple'));
+        geometric(poligonB).forEach(element => plotWithColor(element, 'purple'));
 
 
 
@@ -209,9 +209,9 @@ const Canvas = props => {
 
 export default Canvas
 
-export function geometric( vertices ) {
+export function geometric(vertices) {
 
-    if(vertices.length === 0){
+    if (vertices.length === 0) {
         return [];
     }
 
@@ -294,6 +294,7 @@ export function geometric( vertices ) {
                 let dy = element.end.y - element.start.y;
 
                 while (yi <= yf) {
+
                     intersects.push(Point(Math.round(xi), yi));
                     xi = xi + dx / dy;
                     yi = yi + 1;
@@ -313,30 +314,38 @@ export function geometric( vertices ) {
 
         let bucket = intersects.filter(intersect => intersect.y === y);
         let pool = clean(poligonOrderX(bucket)).filter(unique);
+        //let pool = poligonOrderX( bucket );
 
+        /* É Par */
         if (pool.length % 2 === 0) {
 
             for (let i = 0; i < pool.length; i += 2) {
 
                 let j = pool[i];
                 while (j < pool[i + 1]) {
-                    
+
                     pixels.push(Point(j, y));
                     j++;
                 }
             }
-        } else {
+        }
+        /* É Impar */
+        else {
             for (let i = 0; i < pool.length - 1; i++) {
                 let j = pool[i];
-                while (j < pool[i + 1]) {
-
-                    // log (  "start: ", arestas.filter( aresta => aresta.start.y === -25));
-                    // if(starts > 0){
-                    //     log ( "start: ", Point(j, y));
-                    // }
-                    
-                    pixels.push(Point(j, y));
-                    j++;
+                
+                if (vertices.filter(element => element.x == j && element.y == y).length == 0) {
+                    while (j < pool[i + 1]) {
+                        pixels.push(Point(j, y));
+                        j++;
+                    }
+                }else{
+                    if( i % 2 == 1){
+                        while (j < pool[i + 1]) {
+                            pixels.push(Point(j, y));
+                            j++;
+                        }
+                    }
                 }
             }
         }
@@ -347,17 +356,17 @@ export function geometric( vertices ) {
 
 }
 
-export function clean( points ){
+export function clean(points) {
 
     let array = [];
-    points.forEach( p => array.push(p.x));
+    points.forEach(p => array.push(p.x));
 
     return array = array.filter(unique);
 }
 
 const unique = (value, index, self) => {
     return self.indexOf(value) === index
-  }
+}
 
 
 
