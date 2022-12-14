@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Point from './Point';
+import Point2 from './Point2';
 import Line from './Line';
 import Circle from "./Circle";
 import Fill from "./Fill";
@@ -154,7 +155,7 @@ const Canvas = props => {
         // poligonA = poligonA.concat(Line(Point(30, 0), Point(25, -10)).bresenham);
         // poligonA = poligonA.concat(Line(Point(-20, -20), Point(25, -10)).bresenham);
         // poligonA = poligonA.concat(Line(Point(-20, -20), Point(-5, -5)).bresenham);
-        //poligonA.forEach(plot);
+        // poligonA.forEach(plot);
         //floodFill(poligonA, Point(0, 0), []).forEach( element => plotWithColor(element, 'plum'));
 
         /* Preenchimento por Analise de Contorno Geometrico */
@@ -166,17 +167,17 @@ const Canvas = props => {
         // poligonA.push(Point(-20, -20));
         // geometric( poligonA ).forEach(element => plotWithColor(element, 'purple'));
 
-        let poligon = [];
-        poligon = poligon.concat(Line(Point(-25, -5), Point(-30, 10)).bresenham);
-        poligon = poligon.concat(Line(Point(-30, 10), Point(0, 20)).bresenham);
-        poligon = poligon.concat(Line(Point(0, 20), Point(25, 10)).bresenham);
-        poligon = poligon.concat(Line(Point(25, 10), Point(20, -5)).bresenham);
-        poligon = poligon.concat(Line(Point(20, -5), Point(0, -10)).bresenham);
-        poligon = poligon.concat(Line(Point(-5, 5), Point(0, -10)).bresenham);
-        poligon = poligon.concat(Line(Point(-5, 5), Point(10, 8)).bresenham);
-        poligon = poligon.concat(Line(Point(5, 0), Point(10, 8)).bresenham);
-        poligon = poligon.concat(Line(Point(5, 0), Point(-25, -5)).bresenham);
-        // poligon.forEach(plot);
+        // let poligon = [];
+        // poligon = poligon.concat(Line(Point(-25, -5), Point(-30, 10)).bresenham);
+        // poligon = poligon.concat(Line(Point(-30, 10), Point(0, 20)).bresenham);
+        // poligon = poligon.concat(Line(Point(0, 20), Point(25, 10)).bresenham);
+        // poligon = poligon.concat(Line(Point(25, 10), Point(20, -5)).bresenham);
+        // poligon = poligon.concat(Line(Point(20, -5), Point(0, -10)).bresenham);
+        // poligon = poligon.concat(Line(Point(-5, 5), Point(0, -10)).bresenham);
+        // poligon = poligon.concat(Line(Point(-5, 5), Point(10, 8)).bresenham);
+        // poligon = poligon.concat(Line(Point(5, 0), Point(10, 8)).bresenham);
+        // poligon = poligon.concat(Line(Point(5, 0), Point(-25, -5)).bresenham);
+        // // poligon.forEach(plot);
         // floodFill(poligon, Point(-26, 8), []).forEach( element => plotWithColor(element, 'red'));
         // floodFill(poligon, Point(0, 0), []).forEach( element => plotWithColor(element, 'slateblue'));
 
@@ -194,6 +195,9 @@ const Canvas = props => {
         poligonB.push(Point(-25, -5));
 
         geometric(poligonB).forEach(element => plotWithColor(element, 'purple'));
+
+        let point = new Point(10,0);
+        log( point.x );
 
 
 

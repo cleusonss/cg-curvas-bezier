@@ -34,7 +34,7 @@ export const analytic = (start, end) => {
         }
 
         for (let y = start.y; y <= end.y; y++) {
-            //line.push(Point(start.x, y));
+            line.push(Point(start.x, y));
         }
     }
 
