@@ -139,8 +139,8 @@ const Canvas = (props) => {
         );
 
         let casteljaupoint = Casteljau(controls);
-        for( const p of casteljaupoint){
-            plotWithColor(p, 'red');
+        for (const p of casteljaupoint) {
+          plotWithColor(p, "red");
         }
         break;
       default:
@@ -181,7 +181,6 @@ const Bezier = (start, control1, control2, end) => {
   curve = curve.concat(start);
 
   // C(t) = [(1-t)^3 * P0] + [ 3t * (1-t)^2 * P1] + [ 3t ^ 2 * (1-t) * P2 ] + [t3 * P3 ]
-
   for (let t = 0; t <= 1; t = t + 0.005) {
     let x = Math.pow(1 - t, 3) * start.x; // -> P0
     x += 3 * t * Math.pow(1 - t, 2) * control1.x; // -> P1
@@ -213,7 +212,8 @@ const Casteljau = (controls) => {
     let p1p2_p1p3 = interpolar(p1p2, p2p3, t);
 
     let ponto = interpolar(p0p1_p1p2, p1p2_p1p3, t);
-
+    const pppp = novosPontos(controls, t);
+    log (pppp);
     curve = curve.concat(ponto);
   }
   return curve;
@@ -221,9 +221,24 @@ const Casteljau = (controls) => {
 
 // Interpolação entre dois pontos
 // pt = p0(1-t)+p1*t
-const interpolar = (p1, p2, t) => {
+let interpolar = (p1, p2, t) => {
   const s = 1 - t;
   const x = p1.x * s + p2.x * t;
   const y = p1.y * s + p2.y * t;
   return Point(x, y);
+};
+
+let novosPontos = (controls, t) => {
+  if (controls.length === 1) {
+    return controls[0];
+  }
+
+  let new_controls = [];
+  for (let i = 0; i < controls.length - 1; i++) {
+    let p1 = Point(controls[i].x, controls[i].y);
+    let p2 = Point(controls[i + 1].x, controls[i + 1].y);
+    let p = interpolar(p1, p2, t);
+    new_controls = new_controls.concat(p);
+  }
+  novosPontos(new_controls, t);
 };
