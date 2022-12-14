@@ -30,15 +30,15 @@ import Canvas from "./Canvas";
 const { log } = console;
 
 export default function Home() {
-  const [startX, setStartX] = useState(0);
+  const [startX, setStartX] = useState(-40);
   const [startY, setStartY] = useState(0);
-  const [control1X, setControl1X] = useState(0);
-  const [control1Y, setControl1Y] = useState(0);
-  const [control2X, setControl2X] = useState(0);
-  const [control2Y, setControl2Y] = useState(0);
-  const [endX, setEndX] = useState(0);
+  const [control1X, setControl1X] = useState(-20);
+  const [control1Y, setControl1Y] = useState(20);
+  const [control2X, setControl2X] = useState(20);
+  const [control2Y, setControl2Y] = useState(-20);
+  const [endX, setEndX] = useState(40);
   const [endY, setEndY] = useState(0);
-  const [lineAlgorithm, setLineAlgorithm] = useState("Analitico");
+  const [curveAlgorithm, setCurveAlgorithm] = useState("parametrico");
 
   return (
     <VStack>
@@ -73,13 +73,13 @@ export default function Home() {
                 <Box padding={2}>
                   <RadioGroup
                     defaultValue="Analitico"
-                    value={lineAlgorithm}
-                    onChange={setLineAlgorithm}
+                    value={curveAlgorithm}
+                    onChange={setCurveAlgorithm}
                     direction="1"
                   >
                     <Stack>
-                      <Radio value="Analitico">Paramétrico</Radio>
-                      <Radio value="Bresenham">Casteljau</Radio>
+                      <Radio value="parametrico">Paramétrico</Radio>
+                      <Radio value="casteljau">Casteljau</Radio>
                     </Stack>
                   </RadioGroup>
                 </Box>
@@ -321,7 +321,7 @@ export default function Home() {
             padding={6}
           >
             <Canvas
-              lineAlgorithm={lineAlgorithm}
+              curveAlgorithm={curveAlgorithm}
               startX={startX}
               startY={startY}
               control1X={control1X}
